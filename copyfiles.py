@@ -35,7 +35,8 @@ def _main():
 
             # print(eventList)
             if len(eventList) > 0 and len(eventList) < 4:
-                if copyEventSubset(eventList,copyAction[0:len(eventList)]):
+                print(len(eventList)," - ", eventList, " - ", copyAction[0:len(eventList)])
+                if not copyEventSubset(eventList,copyAction[0:len(eventList)]):
                     eventList = []
 
             if len(eventList) == 4:
@@ -52,7 +53,7 @@ def _main():
                     eventList = []
                     flag_cp_event = True
                     
-            print(eventList)
+            # print(eventList)
     except KeyboardInterrupt:
         print("\b\bTschüss!!!")
         exit()
