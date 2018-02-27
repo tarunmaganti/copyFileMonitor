@@ -12,6 +12,15 @@ def copyEvent(passedList):
             flag = False
     return flag
 
+def copyEventSubset(passedList,requiredList):
+    flag = True
+    for i, j in zip(passedList,requiredList):
+        if (i == j):
+            pass
+        else:
+            flag = False
+    return flag
+
 def _main():
     try:
         i = inotify.adapters.Inotify()
@@ -21,10 +30,14 @@ def _main():
         eventList = []
         for event in i.event_gen(yield_nones=False):
             (_, type_names, path, filename) = event
-            print("*************\nPATH=[{}] FILENAME=[{}] EVENT_TYPES={}\n************".format(path, filename, type_names))
+            #print("*************\nPATH=[{}] FILENAME=[{}] EVENT_TYPES={}\n************".format(path, filename, type_names))
             eventList += [type_names[0]]
 
             # print(eventList)
+            if len(eventList) > 0 and len(eventList) < 4:
+                if copyEventSubset(eventList,copyAction[0:len(eventList)]):
+                    eventList = []
+
             if len(eventList) == 4:
                 if flag_cp_event:
                     if 'IN_CLOSE_WRITE' == eventList[-1]:
@@ -32,12 +45,16 @@ def _main():
                     eventList = []
 
                 if copyEvent(eventList):
+                    i.remove_watch('./Source')
                     shutil.copy2(f'./Source/{filename}',f'./Destination/{filename}')
+                    i.add_watch('./Source')
                     print("\nDone!")
                     eventList = []
                     flag_cp_event = True
-    except KeyboardInterrrupt:
-        print("You cancelled the program")
+                    
+            print(eventList)
+    except KeyboardInterrupt:
+        print("\b\bTschüss!!!")
         exit()
 
 if __name__ == '__main__':
