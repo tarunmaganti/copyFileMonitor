@@ -35,7 +35,7 @@ def _main():
 
             # print(eventList)
             if len(eventList) > 0 and len(eventList) < 4:
-                print(len(eventList)," - ", eventList, " - ", copyAction[0:len(eventList)])
+                # print(len(eventList)," - ", eventList, " - ", copyAction[0:len(eventList)])
                 if not copyEventSubset(eventList,copyAction[0:len(eventList)]):
                     eventList = []
 
@@ -49,7 +49,7 @@ def _main():
                     i.remove_watch('./Source')
                     shutil.copy2(f'./Source/{filename}',f'./Destination/{filename}')
                     i.add_watch('./Source')
-                    print("\nDone!")
+                    print("\nDetected a copy to Source! Copying to Destination......\n\nDone!")
                     eventList = []
                     flag_cp_event = True
                     
